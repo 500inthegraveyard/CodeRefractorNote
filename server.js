@@ -11,6 +11,7 @@ const port = process.env.PORT || 3001;
 const {
     notes
 } = require("joi");
+const noteController=require("./controllers/notesController");
 /* -------------------------------------------------------------------------- */
 // Sets up the Express app to handle data parsing; middelware functions
 /* -------------------------------------------------------------------------- */
@@ -24,7 +25,7 @@ app.use(express.urlencoded({
 
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.static(path.join(__dirname, "db")));
-
+app.use(noteController);
 /* ----------------------------- set empty array ---------------------------- */
 let newNote = [];
 /* -------------------------------------------------------------------------- */
@@ -49,61 +50,11 @@ app.get("/notes", function (req, res) {
 // server ; add it to the .json file and send it back to the browser?
 /* ------------send back json data---------------- */
 app.get("/api/notes", function (req, res) {
-    res.sendFile(path.join(__dirname, "./db/db.json"));
+    res.sendFile(path.join(__dirname, "./db/schema.sql"));
 });
 
 /* ------------------------------- post method ------------------------------ */
 
-app.post("/api/notes", function (req, res) {
-    console.log(req.body);
-
-    /* ------------------- reading the contents(data) of the file ------------------ */
-    // send data as string
-    fs.readFile("./db/db.json", "utf-8", function (err, data) {
-        if (err) throw err;
-        let note;
-
-        /* -------- json.parse changes text into js object and push it into notes array ------- */
-        let notes = JSON.parse(data);
-
-        /* ------------------------- assign node id to notes ------------------------ */
-
-        const noteId = notes.length + 1;
-        console.log("id: ", noteId);
-        noteRequest = req.body;
-
-
-
-        if (req.body.id) {
-            notes = notes.filter((note) => {
-
-                return note.id !== req.body.id;
-
-            });
-
-            newNote = req.body;
-        } else {
-            newNote = {
-                id: noteId,
-                title: noteRequest.title,
-                text: noteRequest.text
-            };
-        }
-
-
-        notes.push(newNote);
-        // res.json(notes);
-
-        // fs.writeFile('db/db.json', JSON.stringify(notes), function (err) {
-        //     if (err) return console.log(err);
-        //     console.log('inserted');
-
-        fs.writeFile("./db/db.json", JSON.stringify(notes, null, 2), "utf-8", function (err, data) {
-            res.status(200).send("Note Saved");
-        });
-
-    });
-});
 
 app.delete("/api/notes/:id", function (req, res) {
     const deleteId = req.params.id;

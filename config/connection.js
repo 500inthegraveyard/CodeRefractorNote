@@ -7,12 +7,13 @@ const dotenv = require("dotenv");
 dotenv.config();
 const connection = mysql.createConnection({
     host: process.env.DB_HOST,
-    username: process.env.DB_USER,
+    user: process.env.DB_USER,
     password: process.env.DB_PASS,
-    PORT: 5050
+    port: 3306,
+    database:"notes_db"
 
 });
-console.log(connection + 'connection is');
+// console.log(connection + 'connection is');
 
 connection.connect(function (err) {
     if (err) {

@@ -1,6 +1,6 @@
 // jshint esversion:6
 
-const connection = require('connection.js');
+const connection = require('./connection.js');
 
 // ORM classes for all our SQL statement functions
 class ORM {
@@ -22,14 +22,14 @@ class ORM {
         console.table(table);
         return this.connection.query(queryString, [table]);
         
-      }
+     }
       
 
     // query to create a table 
     create(Notes, Title, Text ) {
         // insert into notes (id,title,text) values (1,hello,world)
         const queryString = `Insert into ?? (${Title.join(',')})VALUES(${this.printQuestionMarks(Text.length)})`;
-        console.log(queryrootString);
+        console.log(queryString);
         return this.connection.query(queryString, [Notes, ...Text]);
     }
 
@@ -43,3 +43,4 @@ class ORM {
 
 }
 
+module.exports=new ORM(connection);
