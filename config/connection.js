@@ -14,7 +14,14 @@ const connection = mysql.createConnection({
 
 });
 // console.log(connection + 'connection is');
-
+if (process.env.JAWSDB_URL){
+    connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: 'root',
+        database: 'notes_db'
+    });
+};
 connection.connect(function (err) {
     if (err) {
         console.error("error connecting: " + err.stack);
